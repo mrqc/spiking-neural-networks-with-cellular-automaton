@@ -2,8 +2,9 @@ import sys
 import copy
 from time import sleep
 import random
-worldWidth = 20
-worldHeight = 20
+step = 0
+worldWidth = 30
+worldHeight = 30
 world = [[random.choice([0, 1]) for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
 #world = [[0 for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
 #world[0][0] = world[0][1] = world[0][2] = world[1][0] = world[1][2] = world[2][0] = world[2][2] = 1
@@ -40,14 +41,16 @@ def printWorld():
 			else:
 				sys.stdout.write(" ")
 		sys.stdout.write("\n")
+	sys.stdout.write(str(step) + "\n")
 	sys.stdout.flush()
 
 def repaint():
-	sys.stdout.write("\033[F" * (worldHeight))
+	sys.stdout.write("\033[F" * (worldHeight + 1))
 	sys.stdout.flush()
 
 def mutate():
-	global world
+	global world, worldHeight, worldWidth, step
+	step += 1
 	newWorld = copy.deepcopy(world)
 	for row in range(0, worldHeight):
 		for column in range(0, worldWidth):
