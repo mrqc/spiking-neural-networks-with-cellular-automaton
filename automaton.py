@@ -2,12 +2,6 @@ import sys
 import copy
 import time
 import random
-step = 0
-worldWidth = 230
-worldHeight = 70
-world = [[random.choice([0, 1]) for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
-#world[20] = [0 for _ in range(0, int(worldWidth / 3))] + [-1 for _ in range(0, int(worldWidth / 3))] + [0 for _ in range(0, int(worldWidth / 3))] + [0, 0]
-
 def gameOfLifeCell(row, column):
     global world, worldWidth, worldHeight
     area = []
@@ -44,7 +38,7 @@ def countOfCellsWithValue(value):
     return count
 
 def printWorld():
-    global world, worldWidth, worldHeight
+    global world, worldWidth, worldHeight, liveCellsAtStart
     for row in range(0, worldHeight):
         for column in range(0, worldWidth):
             current = world[row][column]
@@ -58,7 +52,7 @@ def printWorld():
     deadCells = countOfCellsWithValue(0)
     liveCells = countOfCellsWithValue(1)
     sys.stdout.write(" " * worldWidth + "\n\033[F")
-    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + "\n")
+    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + " Live Cells at Start: " + str(liveCellsAtStart) + "\n")
     sys.stdout.flush()
 
 def clearWorld():
@@ -77,8 +71,17 @@ def mutateWorld():
 def pause():
     time.sleep(0.005)
 
+step = 0
+worldWidth = 230
+worldHeight = 70
+world = [[random.choice([0, 1]) for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
+#world[20] = [0 for _ in range(0, int(worldWidth / 3))] + [-1 for _ in range(0, int(worldWidth / 3))] + [0 for _ in range(0, int(worldWidth / 3))] + [0, 0]
+liveCellsAtStart = countOfCellsWithValue(1)
+
 while True:
     printWorld()
     mutateWorld()
     pause()
     clearWorld()
+
+
