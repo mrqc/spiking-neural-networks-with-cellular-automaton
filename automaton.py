@@ -11,7 +11,7 @@ def gameOfLifeCell(row, column):
             for sliceColumn in range(column - 1, column + 2):
                 if sliceRow >= 0 and sliceRow < worldHeight and sliceColumn >= 0 and sliceColumn < worldWidth:
                     if not (row == sliceRow and column == sliceColumn):
-                        if current != -1:
+                        if current != -1: # do not add walls to the area around the cell
                             area.append(world[sliceRow][sliceColumn])
         sumArea = sum(area)
         if current == 1:
