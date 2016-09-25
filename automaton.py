@@ -4,8 +4,8 @@ import time
 import random
 
 step = 0
-worldWidth = 10
-worldHeight = 10
+worldWidth = 0
+worldHeight = 0
 
 def countOfCellsWithValue(value):
     count = 0
@@ -49,13 +49,19 @@ def mutateWorld(mutationFunction):
 def pause():
     time.sleep(0.005)
 
-def initWorld():
+def initWorld(newWorld):
     global world, worldWidth, worldHeight, liveCellsAtStart
-    world = [[random.choice([0, 1]) for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
+    if newWorld == None:
+        world = [[random.choice([0, 1]) for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
+    else:
+        world = newWorld
     liveCellsAtStart = countOfCellsWithValue(1)
 
-def run(mutationFunction):
-    initWorld()
+def run(mutationFunction, newWorldWidth, newWorldHeight, newWorld = None):
+    global worldWidth, worldHeight
+    worldWidth = newWorldWidth
+    worldHeight = newWorldHeight
+    initWorld(newWorld)
     while True:
         printWorld()
         mutateWorld(mutationFunction)
