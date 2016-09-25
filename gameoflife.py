@@ -38,4 +38,7 @@ height = 70
 world = [[random.choice([0, 1]) for _1 in range(0, width)] for _2 in range(0, height)]
 # building an unliveable area on row 20 somewhere in the middle
 world[20] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
-automaton.run(gameOfLifeCell, width, height, newWaitTime = 0.001, newWorld = world)
+world[40] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
+world[60] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
+
+automaton.run(gameOfLifeCell, width, height, newWorld = world)

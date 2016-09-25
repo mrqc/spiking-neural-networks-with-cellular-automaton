@@ -6,7 +6,6 @@ import random
 step = 0
 worldWidth = 0
 worldHeight = 0
-waitTime = 0
 
 def countOfCellsWithValue(value):
     count = 0
@@ -16,40 +15,37 @@ def countOfCellsWithValue(value):
                 count += 1
     return count
 
-def printWorld():
-    global world, worldWidth, worldHeight, liveCellsAtStart
-    for row in range(0, worldHeight):
-        for column in range(0, worldWidth):
-            current = world[row][column]
-            if current == 1:
-                sys.stdout.write("*")
-            elif current == 0:
-                sys.stdout.write(" ")
-            elif current == -1:
-                sys.stdout.write("+")
-        sys.stdout.write("\n")
-    deadCells = countOfCellsWithValue(0)
-    liveCells = countOfCellsWithValue(1)
-    sys.stdout.write(" " * worldWidth + "\n\033[F")
-    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + " Live Cells at Start: " + str(liveCellsAtStart) + "\n")
-    sys.stdout.flush()
-
 def clearWorld():
     sys.stdout.write("\033[F" * (worldHeight + 1))
     sys.stdout.flush()
 
-def mutateWorld(mutationFunction):
-    global world, worldHeight, worldWidth, step
+def printCellAndGetIncrementCounts(row, column, liveCells, deadCells):
+    global world, worldWidth, worldHeight, step, liveCellsAtStart
+    current = world[row][column]
+    if current == 1:
+        sys.stdout.write("*")
+        liveCells += 1
+    elif current == 0:
+        sys.stdout.write(" ")
+        deadCells += 1
+    elif current == -1:
+        sys.stdout.write("+")
+    return (liveCells, deadCells)
+
+def mutateAndPrintWorld(mutationFunction):
+    global world, worldWidth, worldHeight, step, liveCellsAtStart
+    deadCells = liveCells = 0
     step += 1
     newWorld = copy.deepcopy(world)
     for row in range(0, worldHeight):
         for column in range(0, worldWidth):
             newWorld[row][column] = mutationFunction(row, column)
+            (liveCells, deadCells) = printCellAndGetIncrementCounts(row, column, liveCells, deadCells)
+        sys.stdout.write("\n")
     world = newWorld
-
-def pause():
-    global waitTime
-    time.sleep(waitTime)
+    sys.stdout.write(" " * worldWidth + "\n\033[F")
+    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + " Live Cells at Start: " + str(liveCellsAtStart) + "\n")
+    sys.stdout.flush()
 
 def initWorld(newWorld):
     global world, worldWidth, worldHeight, liveCellsAtStart
@@ -59,15 +55,12 @@ def initWorld(newWorld):
         world = newWorld
     liveCellsAtStart = countOfCellsWithValue(1)
 
-def run(mutationFunction, newWorldWidth, newWorldHeight, newWaitTime = 0.001, newWorld = None):
+def run(mutationFunction, newWorldWidth, newWorldHeight, newWorld = None):
     global worldWidth, worldHeight
     worldWidth = newWorldWidth
     worldHeight = newWorldHeight
-    waitTime = newWaitTime
     initWorld(newWorld)
     while True:
-        printWorld()
-        mutateWorld(mutationFunction)
-        pause()
+        mutateAndPrintWorld(mutationFunction)
         clearWorld()
 
