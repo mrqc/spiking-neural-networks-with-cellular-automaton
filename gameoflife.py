@@ -30,6 +30,7 @@ def gameOfLifeCell(row, column):
     else:
         return current
 
+# building a wall on row 20
 #world[20] = [0 for _ in range(0, int(worldWidth / 3))] + [-1 for _ in range(0, int(worldWidth / 3))] + [0 for _ in range(0, int(worldWidth / 3))] + [0, 0]
 automaton.worldWidth = 230
 automaton.worldHeight = 70
