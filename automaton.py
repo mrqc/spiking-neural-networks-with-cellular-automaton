@@ -7,8 +7,6 @@ worldWidth = 230
 worldHeight = 70
 world = [[random.choice([0, 1]) for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
 #world[20] = [0 for _ in range(0, int(worldWidth / 3))] + [-1 for _ in range(0, int(worldWidth / 3))] + [0 for _ in range(0, int(worldWidth / 3))] + [0, 0]
-#world = [[0 for _1 in range(0, worldWidth)] for _2 in range(0, worldHeight)]
-#world[0][0] = world[0][1] = world[0][2] = world[1][0] = world[1][2] = world[2][0] = world[2][2] = 1
 
 def gameOfLifeCell(row, column):
     global world, worldWidth, worldHeight
@@ -37,6 +35,14 @@ def gameOfLifeCell(row, column):
     else:
         return current
 
+def countOfCellsWithValue(value):
+    count = 0
+    for row in range(0, worldHeight):
+        for column in range(0, worldWidth):
+            if world[row][column] == value:
+                count += 1
+    return count
+
 def printWorld():
     global world, worldWidth, worldHeight
     for row in range(0, worldHeight):
@@ -49,14 +55,17 @@ def printWorld():
             elif current == -1:
                 sys.stdout.write("+")
         sys.stdout.write("\n")
-    sys.stdout.write(str(step) + "\n")
+    deadCells = countOfCellsWithValue(0)
+    liveCells = countOfCellsWithValue(1)
+    sys.stdout.write(" " * worldWidth + "\n\033[F")
+    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + "\n")
     sys.stdout.flush()
 
-def repaint():
+def clearWorld():
     sys.stdout.write("\033[F" * (worldHeight + 1))
     sys.stdout.flush()
 
-def mutate():
+def mutateWorld():
     global world, worldHeight, worldWidth, step
     step += 1
     newWorld = copy.deepcopy(world)
@@ -64,9 +73,12 @@ def mutate():
         for column in range(0, worldWidth):
             newWorld[row][column] = gameOfLifeCell(row, column)
     world = newWorld
-            
+
+def pause():
+    time.sleep(0.005)
+
 while True:
     printWorld()
-    mutate()
-    time.sleep(0.005)
-    repaint()
+    mutateWorld()
+    pause()
+    clearWorld()
