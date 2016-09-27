@@ -6,6 +6,7 @@ import random
 step = 0
 worldWidth = 0
 worldHeight = 0
+diff = 0
 
 def countOfCellsWithValue(value):
     count = 0
@@ -43,9 +44,10 @@ def mutateAndPrintWorld(mutationFunction):
             (liveCells, deadCells) = printCellAndGetIncrementCounts(row, column, liveCells, deadCells)
         sys.stdout.write("\n")
     world = newWorld
-    sys.stdout.write(" " * worldWidth + "\n\033[F")
-    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + " Live Cells at Start: " + str(liveCellsAtStart) + "\n")
+    sys.stdout.write(" " * worldWidth + "\r")
+    sys.stdout.write("Step: " + str(step) + " Dead Cells: " + str(deadCells) + " Live Cells: " + str(liveCells) + " Live Cells at Start: " + str(liveCellsAtStart) + " Diff: " + str(diff) + "\n")
     sys.stdout.flush()
+    return liveCells
 
 def initWorld(newWorld):
     global world, worldWidth, worldHeight, liveCellsAtStart
@@ -56,11 +58,15 @@ def initWorld(newWorld):
     liveCellsAtStart = countOfCellsWithValue(1)
 
 def run(mutationFunction, newWorldWidth, newWorldHeight, newWorld = None):
-    global worldWidth, worldHeight
+    global worldWidth, worldHeight, step, diff, liveCellsAtStart
     worldWidth = newWorldWidth
     worldHeight = newWorldHeight
     initWorld(newWorld)
+    liveCellsNew = liveCellsAtStart
+    liveCellsOld = 0
+    diff = 1
     while True:
-        mutateAndPrintWorld(mutationFunction)
+        liveCellsNew = mutateAndPrintWorld(mutationFunction)
+	if diff < 0.0001: quit()
+	diff = float(abs(liveCellsNew - liveCellsOld) / float(worldWidth * worldHeight + step ** 2))
         clearWorld()
-

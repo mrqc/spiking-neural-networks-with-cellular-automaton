@@ -32,13 +32,12 @@ def gameOfLifeCell(row, column):
         return current
 
 # building custom world
-width = 230
-height = 70
+width = 180
+height = 40
 # worlds cells can have 3 values: 1 = live; 0 = dead; -1 = an unliveable area
-world = [[random.choice([0, 1]) for _1 in range(0, width)] for _2 in range(0, height)]
-# building an unliveable area on row 20 somewhere in the middle
-world[20] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
-world[40] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
-world[60] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
+world = [[random.choice([0 for _ in range(0, 100)] + [1 for _ in range(0, 100)] + [-1]) for _1 in range(0, width)] for _2 in range(0, height)]
+# building an unliveable area on rows somewhere in the middle
+#world[20] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
+#world[30] = [0 for _ in range(0, int(width / 3))] + [-1 for _ in range(0, int(width / 3))] + [0 for _ in range(0, int(width / 3))] + [0, 0]
 
 automaton.run(gameOfLifeCell, width, height, newWorld = world)
