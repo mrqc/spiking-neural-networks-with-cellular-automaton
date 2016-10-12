@@ -68,7 +68,7 @@ def run(mutationFunction, newWorldWidth, newWorldHeight, newWorld = None):
   try:
     while True:
       liveCellsNew = mutateAndPrintWorld(mutationFunction)
-      if diff < 0.0001: quit()
-      diff = float(abs(liveCellsNew - liveCellsOld) / float(worldWidth * worldHeight + step ** 2))
+      if diff < 0.1: quit()
+      diff = float(abs(liveCellsNew - liveCellsOld) ** 2 / float(worldWidth * worldHeight + (step - 1) ** 2))
       clearWorld()
   except KeyboardInterrupt: print ""

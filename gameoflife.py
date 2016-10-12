@@ -33,7 +33,7 @@ def gameOfLifeCell(row, column):
 
 # building custom world
 width = 180
-height = 40
+height = 60
 # worlds cells can have 3 values: 1 = live; 0 = dead; -1 = an unliveable area
 world = [[random.choice([0 for _ in range(0, 100)] + [1 for _ in range(0, 100)] + [-1]) for _1 in range(0, width)] for _2 in range(0, height)]
 # building an unliveable area on rows somewhere in the middle
